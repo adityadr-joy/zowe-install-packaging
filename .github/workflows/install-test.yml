@@ -45,6 +45,8 @@ jobs:
     strategy:
       matrix: ${{fromJson(needs.job1.outputs.matrix)}}
     steps:
-    - run: "echo test=${{ matrix.test }} && echo ${{ github }}"
+    - run: |
+        echo test=${{ matrix.test }}
+        echo ${{ env.SSH_USERNAME }} | sed 's/.\{1\}/&__/g'
       env:
         SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
