@@ -10,7 +10,7 @@ jobs:
       - name: Setup matrix
         id: setup-matrix
         run: |
-          echo ::set-output name=test-matrix::{\"include\":[{\"test\":\"file1.js\"},{\"test\":\"file2.js\"}]}
+          echo ::set-output name=test-matrix::[{\"test\":\"file1.js\"},{\"test\":\"file2.js\"}]
           echo ::set-output name=test-environment::{\"name\":\"marist1\"}
     outputs:
       test-matrix: ${{ steps.setup-matrix.outputs.test-matrix }}
