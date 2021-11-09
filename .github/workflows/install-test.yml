@@ -6,27 +6,43 @@ on: push
 #   target_server: marist1,marist2
 
 jobs:
-  setup-matrix:
+  # setup-matrix:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Setup matrix
+  #       id: setup-matrix
+  #       run: |
+  #         echo ::set-output name=test-matrix::{\"include\":[{\"test\":\"file1.js\",\"server\":\"marist1\"},{\"test\":\"file2.js\",\"server\":\"marist1\"},{\"test\":\"file1.js\",\"server\":\"marist2\"},{\"test\":\"file1.js\",\"server\":\"marist2\"}]}
+  #   outputs:
+  #     test-matrix: ${{ steps.setup-matrix.outputs.test-matrix }}
+
+  # snyk:
+  #   runs-on: ubuntu-latest
+  #   needs: setup-matrix
+  #   strategy:
+  #     matrix: ${{ fromJson(needs.setup-matrix.outputs.test-matrix) }}
+  #   environment: ${{ matrix.server }}
+  #   steps:
+  #   - uses: actions/checkout@v2
+
+  #   - name: Run test
+  #     env:
+  #       SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+  #     run: "echo test=${{ matrix.test }}"
+
+  job1:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup matrix
-        id: setup-matrix
-        run: |
-          echo ::set-output name=test-matrix::{\"include\":[{\"test\":\"file1.js\",\"server\":\"marist1\"},{\"test\":\"file2.js\",\"server\":\"marist1\"},{\"test\":\"file1.js\",\"server\":\"marist2\"},{\"test\":\"file1.js\",\"server\":\"marist2\"}]}
     outputs:
-      test-matrix: ${{ steps.setup-matrix.outputs.test-matrix }}
-
-  snyk:
-    runs-on: ubuntu-latest
-    needs: setup-matrix
-    strategy:
-      matrix: ${{ fromJson(needs.setup-matrix.outputs.test-matrix) }}
-    environment: ${{ matrix.server }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Run test
-      env:
-        SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-      run: "echo test=${{ matrix.test }}"
+    - id: set-matrix
+      run: echo "::set-output name=matrix::{\"include\":[{\"test\":\"foo\",\"env\":\"marist1\"},{\"test\":\"bar\",\"env\":\"marist1\"}]}"
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.env }}
+    strategy:
+      matrix: ${{fromJson(needs.job1.outputs.matrix)}}
+    steps:
+    - run: "echo test=${{ matrix.test }}" 
