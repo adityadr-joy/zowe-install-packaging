@@ -1,0 +1,31 @@
+name: Installation Test
+
+on: push
+
+jobs:
+  setup-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup matrix
+        id: setup-matrix
+        run: |
+          echo ::set-output name=test-matrix::{\"include\":[{\"test\":\"file1.js\"},{\"test\":\"file2.js\"}]}
+          echo ::set-output name=test-environment::{\"name\":\"marist1\"}
+    outputs:
+      test-matrix: ${{ steps.setup-matrix.outputs.test-matrix }}
+      test-environment: ${{ steps.setup-matrix.outputs.test-environment }}
+
+  snyk:
+    runs-on: ubuntu-latest
+    needs: setup-matrix
+    strategy:
+      matrix: ${{ fromJson(needs.setup-matrix.outputs.test-matrix) }}
+    environment: ${{ fromJson(needs.setup-matrix.outputs.test-environment) }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Run test
+      env:
+        SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+      run: "ehco SSH_USERNAME=${SSH_USERNAME}"
