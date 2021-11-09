@@ -19,8 +19,8 @@ jobs:
   snyk:
     runs-on: ubuntu-latest
     needs: setup-matrix
-    strategy:
-      matrix: ${{ fromJson(needs.setup-matrix.outputs.test-matrix) }}
+    # strategy:
+    #   matrix: ${{ fromJson(needs.setup-matrix.outputs.test-matrix) }}
     environment: ${{ fromJson(needs.setup-matrix.outputs.test-environment) }}
     steps:
     - uses: actions/checkout@v2
