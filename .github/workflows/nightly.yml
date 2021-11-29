@@ -2,11 +2,11 @@ name: Zowe Nightly Pipeline
 on:
   push: 
     branches: 
-      - users/tom/gha-nightly
+      - users/tom/gha-nightly-master
 
 jobs:
   call-build-workflow:
-    uses: zowe/zowe-install-packaging/.github/workflows/build-packaging.yml@staging
+    uses: zowe/zowe-install-packaging/.github/workflows/build-packaging.yml@users/tom/gha-nightly-master
     with:
       BUILD_SMPE: true
       BUILD_PSIANDSMPE: false
@@ -24,3 +24,13 @@ jobs:
       ZLINUX_SSH_PASSPHRASE: ${{ secrets.ZLINUX_SSH_PASSPHRASE }}
       DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
       DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  call-test-workflow:
+    needs: call-build-workflow
+    uses: zowe/zowe-install-packaging/.github/workflows/cicd-test.yml@users/tom/gha-nightly-master
+    with: 
+      test-file-server: basic/install.ts(zzow02,zzow03,zzow04);basic/install-ptf.ts(zzow02,zzow03,zzow04);basic/install-docker.ts(zzow04)
+    secrets:
+      JF_ARTIFACTORY_TOKEN: ${{ secrets.JF_ARTIFACTORY_TOKEN }}
+
+  
