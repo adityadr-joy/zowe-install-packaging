@@ -68,9 +68,16 @@ jobs:
       id: set-matrix
       run: |
         # sanitize all whitespaces
-        TEST_FILE_SERVER=$(echo "${{ github.event.inputs.test-file-server }}" | tr -d "[:space:]")
+        if [[ -z ${{ inputs.test-file-server }} ]]; then
+          TEST_FILE_SERVER=$(echo "${{ github.event.inputs.test-file-server }}" | tr -d "[:space:]")
+        else
+          TEST_FILE_SERVER=$(echo "${{ inputs.test-file-server }}" | tr -d "[:space:]")
+        fi
 
         # validate
+        if [[ -z "$TEST_FILE_SERVER" ]]; then
+          echo "Your input is empty, abort job"
+        fi
         if [[ $TEST_FILE_SERVER =~ ^([A-Za-z0-9/-]+\.ts\((zzow02|zzow03|zzow04)(,(zzow02|zzow03|zzow04))*\))(;[A-Za-z0-9/-]+\.ts\((zzow02|zzow03|zzow04)(,(zzow02|zzow03|zzow04))*\))*$ ]]; then
           echo "Syntax validation success!"
         else
