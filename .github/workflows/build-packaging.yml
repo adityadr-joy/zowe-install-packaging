@@ -98,13 +98,13 @@ jobs:
     steps: 
       - run: echo ${{ inputs.NIGHTLY }}
       - name: '[Prep 1] Checkout'
-        if: ${{ inputs.NIGHTLY == 'true' }}
+        if: ${{ inputs.NIGHTLY }} == 'true'
         uses: actions/checkout@v2
         with:
           ref: staging
       
       - name: '[Prep 1] Checkout'
-        if: ${{ inputs.NIGHTLY == '' }}
+        if: ${{ inputs.NIGHTLY }} == ''
         uses: actions/checkout@v2
   
       - name: '[Prep 2] Setup jFrog CLI'
