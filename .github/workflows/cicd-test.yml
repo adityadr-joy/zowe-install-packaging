@@ -68,7 +68,7 @@ jobs:
       id: set-matrix
       run: |
         # sanitize all whitespaces
-        if [[ -z ${{ inputs.test-file-server }} ]]; then
+        if [[ -z "${{ inputs.test-file-server }}" ]]; then
           TEST_FILE_SERVER=$(echo "${{ github.event.inputs.test-file-server }}" | tr -d "[:space:]")
         else
           TEST_FILE_SERVER=$(echo "${{ inputs.test-file-server }}" | tr -d "[:space:]")
