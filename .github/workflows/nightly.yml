@@ -27,7 +27,7 @@ jobs:
   #     DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
   call-test-workflow:
-    needs: call-build-workflow
+    # needs: call-build-workflow
     uses: zowe/zowe-install-packaging/.github/workflows/cicd-test.yml@users/tom/nightly2ma5ter
     with: 
       NIGHTLY: true
