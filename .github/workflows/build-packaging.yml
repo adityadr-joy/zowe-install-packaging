@@ -96,7 +96,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-permission
     steps: 
-      - run: echo ${{ inputs.NIGHTLY }}
       - name: '[Prep 1] Checkout'
         if: ${{ inputs.NIGHTLY == true }}
         uses: actions/checkout@v2
