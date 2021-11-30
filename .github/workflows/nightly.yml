@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-build-workflow:
-    uses: zowe/zowe-install-packaging/.github/workflows/build-packaging.yml@users/tom/nightly2ma5ter
+    uses: zowe/zowe-install-packaging/.github/workflows/build-packaging.yml@staging
     with:
       BUILD_SMPE: true
       BUILD_PSIANDSMPE: false
@@ -27,7 +27,7 @@ jobs:
 
   call-test-workflow:
     needs: call-build-workflow
-    uses: zowe/zowe-install-packaging/.github/workflows/cicd-test.yml@users/tom/nightly2ma5ter
+    uses: zowe/zowe-install-packaging/.github/workflows/cicd-test.yml@staging
     with: 
       test-file-server: basic/install.ts(zzow02,zzow03,zzow04);basic/install-ptf.ts(zzow02,zzow03,zzow04);basic/install-docker.ts(zzow04)
     secrets:
