@@ -2,6 +2,9 @@ name: Zowe CICD Integration Tests
 on:
   workflow_call:
     inputs:
+      NIGHTLY:
+        required: true
+        type: boolean
       test-file-server:
         type: string
         required: true
@@ -105,6 +108,13 @@ jobs:
     environment: ${{ matrix.server }}
     steps:
       - name: '[Prep 1] Checkout'
+        if: inputs.NIGHTLY == 'true'
+        uses: actions/checkout@v2
+        with:
+          ref: staging
+      
+      - name: '[Prep 1] Checkout'
+        if: inputs.NIGHTLY == ''
         uses: actions/checkout@v2
 
       - name: '[Prep 2] Cache node modules'

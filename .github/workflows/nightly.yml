@@ -6,8 +6,9 @@ on:
 
 jobs:
   call-build-workflow:
-    uses: zowe/zowe-install-packaging/.github/workflows/build-packaging.yml@staging
+    uses: zowe/zowe-install-packaging/.github/workflows/build-packaging.yml@users/tom/nightly2ma5ter
     with:
+      NIGHTLY: true
       BUILD_SMPE: true
       BUILD_PSIANDSMPE: false
       BUILD_DOCKER: true
@@ -27,8 +28,9 @@ jobs:
 
   call-test-workflow:
     needs: call-build-workflow
-    uses: zowe/zowe-install-packaging/.github/workflows/cicd-test.yml@staging
+    uses: zowe/zowe-install-packaging/.github/workflows/cicd-test.yml@users/tom/nightly2ma5ter
     with: 
+      NIGHTLY: true
       test-file-server: basic/install.ts(zzow02,zzow03,zzow04);basic/install-ptf.ts(zzow02,zzow03,zzow04);basic/install-docker.ts(zzow04)
     secrets:
       JF_ARTIFACTORY_TOKEN: ${{ secrets.JF_ARTIFACTORY_TOKEN }}

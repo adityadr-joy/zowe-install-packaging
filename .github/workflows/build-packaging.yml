@@ -7,6 +7,9 @@ on:
   #   types: [opened, synchronize]
   workflow_call:
     inputs:
+      NIGHTLY:
+        required: true
+        type: boolean
       BUILD_SMPE:
         required: false
         type: boolean
@@ -25,6 +28,7 @@ on:
       KEEP_TEMP_PAX_FOLDER:
         required: false
         type: boolean
+      
     secrets:
       JF_ARTIFACTORY_TOKEN:
         required: true
@@ -93,6 +97,13 @@ jobs:
     needs: check-permission
     steps: 
       - name: '[Prep 1] Checkout'
+        if: inputs.NIGHTLY == 'true'
+        uses: actions/checkout@v2
+        with:
+          ref: staging
+      
+      - name: '[Prep 1] Checkout'
+        if: inputs.NIGHTLY == ''
         uses: actions/checkout@v2
   
       - name: '[Prep 2] Setup jFrog CLI'
