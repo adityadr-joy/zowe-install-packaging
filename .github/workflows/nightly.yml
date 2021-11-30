@@ -38,6 +38,9 @@ jobs:
       SSH_PORT: ${{ secrets.SSH_PORT }}
       SSH_USER: ${{ secrets.SSH_USER }}
       SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-
+    # Above secrets exists in the environment, doing secrets here to mitigate a problem of reusable workflows where environment secret can
+    #   not be passed in properly
+    # More info: https://github.community/t/reusable-workflows-secrets-and-environments/203695/23
+    # it was a bit weird to pass in above secrets, hope Github team can improve on this
 
   
