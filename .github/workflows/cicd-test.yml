@@ -156,7 +156,7 @@ jobs:
           else
             CURRENT_BRANCH_NEW=$(echo ${{ env.CURRENT_BRANCH }} | tr '[:upper:]' '[:lower:]' | sed "s#\/#-#g")
           fi
-          
+
           function jfrog_search {
             search_pattern=$1
             if [[ -z "$search_pattern" ]]; then
@@ -224,7 +224,7 @@ jobs:
             fi
             
             # determine if we shall libs-snapshot-local or libs-release-local
-            if [[ "${{ env.CURRENT_BRANCH }}" == "rc" ]] || [[ "${{ env.CURRENT_BRANCH }}" == "master" ]] ; then
+            if [[ "$CURRENT_BRANCH_NEW" == "rc" ]] || [[ "$CURRENT_BRANCH_NEW" == "master" ]] ; then
               ZOWE_ARTIFACTORY_PATTERN_INTERIM=$(echo "$ZOWE_ARTIFACTORY_PATTERN_INTERIM" | sed "s#PLACE-HOLDER#libs-release-local#g")
             else
               ZOWE_ARTIFACTORY_PATTERN_INTERIM=$(echo "$ZOWE_ARTIFACTORY_PATTERN_INTERIM" | sed "s#PLACE-HOLDER#libs-snapshot-local#g")
@@ -260,7 +260,7 @@ jobs:
           if [[ -z "${{ github.event.inputs.custom-zowe-cli-artifactory-pattern }}" ]]; then
             ZOWE_CLI_ARTIFACTORY_PATTERN="${{ env.DEFAULT_ZOWE_CLI_ARTIFACTORY_PATTERN }}"
             # determine if we shall libs-snapshot-local or libs-release-local
-            if [[ "${{ env.CURRENT_BRANCH }}" == "rc" ]] || [[ "${{ env.CURRENT_BRANCH }}" == "master" ]]; then
+            if [[ "$CURRENT_BRANCH_NEW" == "rc" ]] || [[ "$CURRENT_BRANCH_NEW" == "master" ]]; then
               ZOWE_CLI_ARTIFACTORY_PATTERN=$(echo "$ZOWE_CLI_ARTIFACTORY_PATTERN" | sed "s#PLACE-HOLDER#libs-release-local#g")
             else
               ZOWE_CLI_ARTIFACTORY_PATTERN=$(echo "$ZOWE_CLI_ARTIFACTORY_PATTERN" | sed "s#PLACE-HOLDER#libs-snapshot-local#g")
@@ -322,7 +322,7 @@ jobs:
             if [[ -z "${{ github.event.inputs.custom-zowe-tp-docker-artifactory-pattern }}" ]]; then
               ZOWE_TP_DOCKER_ARTIFACTORY_PATTERN=$(echo "${{ env.DEFAULT_ZOWE_TP_DOCKER_ARTIFACTORY_PATTERN }}" | sed "s#{branch-name}#$CURRENT_BRANCH_NEW#g")
               # determine if we shall libs-snapshot-local or libs-release-local
-              if [[ "${{ env.CURRENT_BRANCH }}" == 'rc']] || [[ "${{ env.CURRENT_BRANCH }}" == 'master']] ; then
+              if [[ "$CURRENT_BRANCH_NEW" == "rc" ]] || [[ "$CURRENT_BRANCH_NEW" == "master" ]] ; then
                 ZOWE_TP_DOCKER_ARTIFACTORY_PATTERN=$(echo "$ZOWE_TP_DOCKER_ARTIFACTORY_PATTERN" | sed "s#PLACE-HOLDER#libs-release-local#g")
               else
                 ZOWE_TP_DOCKER_ARTIFACTORY_PATTERN=$(echo "$ZOWE_TP_DOCKER_ARTIFACTORY_PATTERN" | sed "s#PLACE-HOLDER#libs-snapshot-local#g")
